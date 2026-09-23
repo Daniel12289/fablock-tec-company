@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- ============================================================
+  FABLOCK TEC — Single-File Application
+  "Building Technology for the Next Generation."
+  Location: Nigeria
+  Contact: WhatsApp +2347045891162  →  https://wa.me/2347045891162
+  Deploy: static hosting (Vercel). Upload index.html, robots.txt, sitemap.xml
+============================================================ -->
+
+<!-- ── GOOGLE SEARCH CONSOLE VERIFICATION (placeholder — replace with your real code) ── -->
+<meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FABLOCK TEC — Building Technology for the Next Generation | AI Software & Digital Products, Nigeria</title>
+<meta name="description" content="FABLOCK TEC is a Nigerian technology company building AI-powered software, web applications, developer tools and digital products. Explore our products, services, projects and team.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FABLOCK TEC">
+<meta property="og:title" content="FABLOCK TEC — Building Technology for the Next Generation">
+<meta property="og:description" content="AI-powered software, web applications, developer tools and digital products built in Nigeria for the next generation.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/assets/og-cover.png">
+<meta property="og:locale" content="en_NG">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FABLOCK TEC — Building Technology for the Next Generation">
+<meta name="twitter:description" content="AI-powered software, web applications, developer tools and digital products.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/assets/og-cover.png">
+
+<meta name="theme-color" content="#070b14">
+<meta name="robots" content="index, follow">
+
+<!-- Schema.org: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "FABLOCK TEC",
+  "slogan": "Building Technology for the Next Generation.",
+  "url": "https://YOUR-DOMAIN.com/",
+  "logo": "https://YOUR-DOMAIN.com/assets/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "telephone": "+2347045891162",
+    "url": "https://wa.me/2347045891162",
+    "areaServed": "NG",
+    "availableLanguage": ["English"]
+  },
+  "address": { "@type": "PostalAddress", "addressCountry": "NG" }
+}
+</script>
+
+<!-- Schema.org: WebSite -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "FABLOCK TEC",
+  "url": "https://YOUR-DOMAIN.com/",
+  "description": "AI-powered software, web applications, developer tools and digital products.",
+  "publisher": { "@type": "Organization", "name": "FABLOCK TEC" }
+}
+</script>
+
+<!-- Firebase Web SDK (compat CDN) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<style>
+/* ================= DESIGN TOKENS ================= */
+:root{
+  --bg:#070b14;
+  --bg-2:#0b1120;
+  --surface:rgba(255,255,255,.04);
+  --surface-2:rgba(255,255,255,.07);
+  --stroke:rgba(255,255,255,.09);
+  --text:#e8edf7;
+  --muted:#93a1b8;
+  --accent:#5b8cff;
+  --accent-2:#22d3ee;
+  --accent-3:#a78bfa;
+  --success:#34d399;
+  --danger:#f87171;
+  --radius:18px;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+::selection{background:rgba(91,140,255,.35)}
+
+/* Ambient background */
+.bg-glow{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(700px 500px at 15% -5%, rgba(91,140,255,.16), transparent 60%),
+    radial-gradient(700px 500px at 90% 10%, rgba(167,139,250,.12), transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, rgba(34,211,238,.10), transparent 60%),
+    var(--bg);
+}
+.bg-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse at 50% 0%,#000 20%,transparent 75%);
+}
+
+/* ================= LAYOUT ================= */
+.container{width:min(1160px,92%);margin:0 auto}
+.page{display:none}
+.page.active{display:block;animation:pageIn .5s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+section{padding:84px 0}
+.section-head{max-width:640px;margin-bottom:48px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent-2);font-weight:600;margin-bottom:14px}
+.eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.08;letter-spacing:-.03em;font-weight:800}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1.15;letter-spacing:-.02em;font-weight:750}
+h3{font-size:1.18rem;font-weight:650;letter-spacing:-.01em}
+.lead{color:var(--muted);font-size:1.06rem;margin-top:16px;max-width:600px}
+.grad-text{background:linear-gradient(92deg,var(--accent) 0%,var(--accent-2) 55%,var(--accent-3) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ================= NAV ================= */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent}
+header.nav.scrolled{background:rgba(7,11,20,.78);backdrop-filter:blur(16px);border-bottom-color:var(--stroke)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem;letter-spacing:.02em}
+.logo-mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:.9rem;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-3));box-shadow:0 4px 18px rgba(91,140,255,.4)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{padding:8px 13px;border-radius:10px;color:var(--muted);font-size:.92rem;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--text);background:var(--surface)}
+.nav-links a.active{color:var(--text);background:var(--surface-2)}
+.nav-cta{margin-left:8px}
+.burger{display:none;background:none;border:1px solid var(--stroke);border-radius:10px;color:var(--text);
+  width:42px;height:42px;font-size:1.15rem;background:var(--surface)}
+
+/* ================= BUTTONS ================= */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:12px;font-weight:600;font-size:.95rem;
+  border:1px solid transparent;transition:transform .18s,box-shadow .18s,background .18s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#3f6fe0);color:#fff;box-shadow:0 8px 26px rgba(91,140,255,.35)}
+.btn-primary:hover{box-shadow:0 12px 34px rgba(91,140,255,.5)}
+.btn-wa{background:linear-gradient(135deg,#1faa55,#128c4b);color:#fff;box-shadow:0 8px 26px rgba(34,197,94,.28)}
+.btn-wa:hover{box-shadow:0 12px 34px rgba(34,197,94,.42)}
+.btn-ghost{background:var(--surface);border-color:var(--stroke);color:var(--text)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-danger{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.35);color:var(--danger)}
+.btn-danger:hover{background:rgba(248,113,113,.2)}
+.btn-sm{padding:8px 16px;font-size:.85rem;border-radius:10px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ================= HERO ================= */
+.hero{padding:170px 0 100px;position:relative}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:100px;
+  background:var(--surface);border:1px solid var(--stroke);font-size:.82rem;color:var(--muted);margin-bottom:26px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 12px var(--success);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:64px;max-width:640px}
+.stat{padding:20px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--stroke)}
+.stat b{display:block;font-size:1.6rem;letter-spacing:-.02em}
+.stat span{font-size:.82rem;color:var(--muted)}
+.hero-visual{margin-top:70px;border-radius:24px;border:1px solid var(--stroke);overflow:hidden;
+  background:linear-gradient(160deg,rgba(91,140,255,.1),rgba(167,139,250,.06) 50%,rgba(34,211,238,.08));
+  box-shadow:var(--shadow)}
+.hero-visual svg{display:block;width:100%}
+
+/* ================= CARDS / GRIDS ================= */
+.grid{display:grid;gap:22px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;
+  transition:transform .25s,border-color .25s,background .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-5px);border-color:rgba(91,140,255,.35);background:var(--surface-2)}
+.card-icon{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:18px;
+  background:linear-gradient(135deg,rgba(91,140,255,.2),rgba(34,211,238,.14));border:1px solid var(--stroke);color:var(--accent-2)}
+.card p{color:var(--muted);font-size:.93rem;margin-top:10px}
+.card .tag{display:inline-block;margin-top:16px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 11px;border-radius:100px;border:1px solid var(--stroke);color:var(--muted)}
+.chip{font-size:.72rem;font-weight:600;padding:4px 11px;border-radius:100px;letter-spacing:.04em}
+.chip-live{background:rgba(52,211,153,.14);color:var(--success);border:1px solid rgba(52,211,153,.3)}
+.chip-dev{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.chip-beta{background:rgba(91,140,255,.14);color:var(--accent);border:1px solid rgba(91,140,255,.3)}
+.chip-planned{background:rgba(147,161,184,.12);color:var(--muted);border:1px solid var(--stroke)}
+
+/* Product / project previews */
+.preview{border-radius:14px;overflow:hidden;border:1px solid var(--stroke);margin-bottom:20px;aspect-ratio:16/9;
+  background:linear-gradient(150deg,#0d1526,#111c33)}
+.preview svg{width:100%;height:100%;display:block}
+.tech-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.tech-row span{font-size:.72rem;padding:4px 10px;border-radius:8px;background:var(--surface-2);
+  border:1px solid var(--stroke);color:var(--muted)}
+.card-link{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:.9rem;font-weight:600;color:var(--accent-2)}
+.card-link:hover{gap:11px}
+.card-link{transition:gap .2s}
+
+/* ================= LABS / MISSION ================= */
+.labs-band{border-radius:26px;padding:56px;border:1px solid var(--stroke);position:relative;overflow:hidden;
+  background:linear-gradient(140deg,rgba(91,140,255,.14),rgba(167,139,250,.08) 45%,rgba(34,211,238,.1))}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.check-list{list-style:none;margin-top:24px;display:grid;gap:14px}
+.check-list li{display:flex;gap:12px;color:var(--muted);font-size:.96rem}
+.check-list li::before{content:"✓";flex:0 0 24px;height:24px;border-radius:8px;display:grid;place-items:center;
+  font-size:.75rem;color:var(--accent-2);background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3)}
+
+/* ================= TEAM ================= */
+.member-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.member-card{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius);padding:24px;
+  text-align:center;transition:transform .25s,border-color .25s;animation:pageIn .5s ease both}
+.member-card:hover{transform:translateY(-5px);border-color:rgba(91,140,255,.35)}
+.avatar{width:92px;height:92px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:2px solid var(--stroke);
+  background:linear-gradient(135deg,rgba(91,140,255,.25),rgba(167,139,250,.2));display:grid;place-items:center;
+  font-size:1.6rem;font-weight:700;color:var(--accent-2)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.member-card h3{font-size:1.02rem}
+.member-role{font-size:.8rem;color:var(--accent-2);font-weight:600;margin:4px 0 10px}
+.member-bio{font-size:.85rem;color:var(--muted)}
+.member-dept{display:inline-block;margin-top:14px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:100px;border:1px solid var(--stroke);color:var(--muted)}
+.member-social{display:inline-flex;margin-top:14px;color:var(--muted);font-size:.82rem;font-weight:600}
+.member-social:hover{color:var(--accent-2)}
+.empty-state{border:1px dashed var(--stroke);border-radius:var(--radius);padding:60px 24px;text-align:center;color:var(--muted)}
+.empty-state .big{font-size:2rem;margin-bottom:10px}
+.skeleton{border-radius:var(--radius);border:1px solid var(--stroke);background:var(--surface);height:280px;
+  animation:shimmer 1.6s infinite linear;background-image:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.05) 50%,transparent 70%);
+  background-size:200% 100%}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* ================= CTA BAND ================= */
+.cta-band{border-radius:26px;padding:60px;text-align:center;border:1px solid var(--stroke);position:relative;overflow:hidden;
+  background:linear-gradient(140deg,rgba(91,140,255,.16),rgba(34,211,238,.1))}
+.cta-band p{color:var(--muted);max-width:520px;margin:14px auto 30px}
+
+/* ================= FORMS ================= */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:7px;color:var(--muted)}
+.field input,.field textarea,.field select{width:100%;padding:13px 15px;border-radius:12px;font-size:.95rem;color:var(--text);
+  background:var(--surface);border:1px solid var(--stroke);outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,140,255,.18)}
+.field textarea{min-height:130px;resize:vertical}
+.form-note{font-size:.8rem;color:var(--muted);margin-top:14px}
+.form-status{margin-top:14px;font-size:.9rem;display:none}
+.form-status.ok{display:block;color:var(--success)}
+.form-status.err{display:block;color:var(--danger)}
+
+/* ================= ADMIN ================= */
+.admin-wrap{display:grid;grid-template-columns:230px 1fr;gap:26px;align-items:start;padding-top:130px;padding-bottom:90px}
+.admin-side{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius);padding:18px;position:sticky;top:96px}
+.admin-side a,.admin-side button{display:flex;width:100%;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;
+  color:var(--muted);font-size:.9rem;font-weight:500;background:none;border:none;text-align:left;transition:.2s}
+.admin-side a:hover,.admin-side a.active,.admin-side button:hover{background:var(--surface-2);color:var(--text)}
+.admin-panel{display:none}
+.admin-panel.active{display:block;animation:pageIn .4s ease both}
+.admin-card{background:var(--surface);border:1px solid var(--stroke);border-radius:var(--radius);padding:30px}
+.admin-table{width:100%;border-collapse:collapse;margin-top:8px}
+.admin-table th{text-align:left;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding:12px 14px;border-bottom:1px solid var(--stroke)}
+.admin-table td{padding:13px 14px;border-bottom:1px solid var(--stroke);font-size:.9rem;vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table .mini-avatar{width:40px;height:40px;border-radius:10px;object-fit:cover;border:1px solid var(--stroke)}
+.login-card{max-width:420px;margin:130px auto 90px}
+.fb-warning{display:flex;gap:12px;padding:16px 18px;border-radius:14px;font-size:.88rem;margin-bottom:22px;
+  background:rgba(251,191,36,.09);border:1px solid rgba(251,191,36,.3);color:#fcd34d}
+.fb-warning.ok{background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.3);color:var(--success)}
+.img-preview{width:110px;height:110px;border-radius:14px;border:1px dashed var(--stroke);object-fit:cover;display:none;margin-top:12px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(3,6,12,.7);backdrop-filter:blur(6px);z-index:200;display:none;
+  align-items:center;justify-content:center;padding:20px}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--bg-2);border:1px solid var(--stroke);border-radius:20px;padding:32px;max-width:440px;width:100%;
+  box-shadow:var(--shadow);animation:pageIn .3s ease both}
+.code-block{background:#05080f;border:1px solid var(--stroke);border-radius:12px;padding:18px;font-size:.8rem;
+  font-family:ui-monospace,Menlo,Consolas,monospace;color:#a5f3fc;overflow-x:auto;white-space:pre;line-height:1.6}
+
+/* ================= FOOTER ================= */
+footer{border-top:1px solid var(--stroke);padding:60px 0 30px;background:rgba(0,0,0,.25)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:44px}
+footer h4{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+footer ul{list-style:none;display:grid;gap:10px}
+footer ul a{color:var(--muted);font-size:.9rem;transition:.2s}
+footer ul a:hover{color:var(--accent-2)}
+.foot-bottom{border-top:1px solid var(--stroke);padding-top:24px;display:flex;justify-content:space-between;gap:14px;
+  flex-wrap:wrap;color:var(--muted);font-size:.84rem}
+
+/* WhatsApp float */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:150;width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c4b);display:grid;place-items:center;box-shadow:0 10px 30px rgba(37,211,102,.4);
+  transition:transform .2s}
+.wa-float:hover{transform:scale(1.1)}
+
+/* ================= REVEAL ANIMATION ================= */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1000px){
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .member-grid{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .admin-wrap{grid-template-columns:1fr}
+  .admin-side{position:static;display:flex;flex-wrap:wrap;gap:6px}
+  .admin-side a,.admin-side button{width:auto}
+}
+@media(max-width:680px){
+  section{padding:60px 0}
+  .grid-3,.grid-2{grid-template-columns:1fr}
+  .hero{padding:130px 0 70px}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .labs-band,.cta-band{padding:36px 24px}
+  .nav-links{position:fixed;top:70px;right:0;left:0;flex-direction:column;align-items:stretch;
+    background:rgba(7,11,20,.97);backdrop-filter:blur(18px);padding:16px;border-bottom:1px solid var(--stroke);
+    transform:translateY(-130%);transition:transform .3s;z-index:99}
+  .nav-links.open{transform:none}
+  .nav-links a{padding:13px 16px}
+  .burger{display:grid;place-items:center}
+  .member-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<!-- ================= NAVIGATION ================= -->
+<header class="nav" id="siteNav">
+  <div class="container nav-inner">
+    <a href="#/" class="logo" aria-label="FABLOCK TEC home">
+      <span class="logo-mark">F</span> FABLOCK&nbsp;TEC
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="#/" data-route="home">Home</a>
+      <a href="#/products" data-route="products">Products</a>
+      <a href="#/services" data-route="services">Services</a>
+      <a href="#/projects" data-route="projects">Projects</a>
+      <a href="#/about" data-route="about">About</a>
+      <a href="#/team" data-route="team">Team</a>
+      <a href="#/contact" data-route="contact">Contact</a>
+      <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa btn-sm nav-cta">Chat on WhatsApp</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main id="app">
+
+<!-- ============================================================
+     PAGE: HOME
+============================================================ -->
+<div class="page" id="page-home">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span> Technology Company · Nigeria</div>
+      <h1>Building <span class="grad-text">Technology</span> for the <span class="grad-text">Next Generation.</span></h1>
+      <p class="lead">FABLOCK TEC engineers AI-powered software, web applications, developer tools and digital products — practical technology built to solve real problems.</p>
+      <div class="hero-actions">
+        <a href="#/products" class="btn btn-primary">Explore Our Products →</a>
+        <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.1-4.7-4-4.9-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.2c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.3.2.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4 0 .2 0 .7-.2 1.1z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>AI-First</b><span>Product engineering approach</span></div>
+        <div class="stat"><b>Full-Stack</b><span>Web, software &amp; dashboards</span></div>
+        <div class="stat"><b>Nigeria → Global</b><span>Built locally, deployed worldwide</span></div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <svg viewBox="0 0 1160 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract illustration of AI-powered software engineering at FABLOCK TEC">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#5b8cff" stop-opacity=".55"/><stop offset="1" stop-color="#22d3ee" stop-opacity=".25"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#a78bfa" stop-opacity=".5"/><stop offset="1" stop-color="#5b8cff" stop-opacity=".15"/>
+            </linearGradient>
+          </defs>
+          <rect width="1160" height="340" fill="#0a1120"/>
+          <g stroke="rgba(255,255,255,.05)"><path d="M0 85h1160M0 170h1160M0 255h1160M145 0v340M290 0v340M435 0v340M580 0v340M725 0v340M870 0v340M1015 0v340"/></g>
+          <circle cx="580" cy="170" r="120" fill="none" stroke="url(#g1)" stroke-width="1.4"/>
+          <circle cx="580" cy="170" r="86" fill="none" stroke="url(#g2)" stroke-width="1.2" stroke-dasharray="5 7"/>
+          <circle cx="580" cy="170" r="54" fill="rgba(91,140,255,.12)" stroke="rgba(91,140,255,.5)"/>
+          <circle cx="580" cy="170" r="12" fill="#22d3ee"/>
+          <g fill="#5b8cff"><circle cx="580" cy="50" r="5"/><circle cx="700" cy="170" r="5"/><circle cx="580" cy="290" r="5"/><circle cx="460" cy="170" r="5"/></g>
+          <g stroke="rgba(91,140,255,.35)"><path d="M580 62v44M688 170h-44M580 278v-44M472 170h44"/></g>
+          <g font-family="monospace" font-size="13" fill="#5eead4" opacity=".8">
+            <text x="60" y="70">&lt;FablockAI model="builder" /&gt;</text>
+            <text x="60" y="100">train(epochs=∞)</text>
+            <text x="880" y="270">deploy --vercel --prod</text>
+            <text x="880" y="300">status: shipping ✓</text>
+          </g>
+          <g fill="rgba(255,255,255,.5)" font-family="monospace" font-size="12">
+            <text x="60" y="300">products · services · labs</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products preview -->
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Products</span>
+        <h2>Digital products built by <span class="grad-text">FABLOCK TEC</span></h2>
+        <p class="lead">From AI builders to developer tools — products engineered for builders, learners and businesses.</p>
+      </div>
+      <div class="grid grid-3" id="homeProducts"></div>
+      <div style="margin-top:34px"><a href="#/products" class="btn btn-ghost">View all products →</a></div>
+    </div>
+  </section>
+
+  <!-- Services preview -->
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Services</span>
+        <h2>What we can build <span class="grad-text">for you</span></h2>
+      </div>
+      <div class="grid grid-3" id="homeServices"></div>
+      <div style="margin-top:34px"><a href="#/services" class="btn btn-ghost">All services →</a></div>
+    </div>
+  </section>
+
+  <!-- Projects preview -->
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Projects</span>
+        <h2>Selected <span class="grad-text">work</span></h2>
+      </div>
+      <div class="grid grid-3" id="homeProjects"></div>
+      <div style="margin-top:34px"><a href="#/projects" class="btn btn-ghost">View all projects →</a></div>
+    </div>
+  </section>
+
+  <!-- Team preview (live from Firebase) -->
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Team</span>
+        <h2>Meet the <span class="grad-text">FABLOCK TEC</span> Team</h2>
+        <p class="lead">The people designing, engineering and shipping our technology.</p>
+      </div>
+      <div class="member-grid" id="homeMembers"></div>
+      <div style="margin-top:34px"><a href="#/team" class="btn btn-ghost">Full team directory →</a></div>
+    </div>
+  </section>
+
+  <!-- FABLOCK LABS -->
+  <section>
+    <div class="container">
+      <div class="labs-band reveal">
+        <div class="split">
+          <div>
+            <span class="eyebrow">FABLOCK LABS</span>
+            <h2>Where experiments become <span class="grad-text">products</span></h2>
+            <p class="lead">FABLOCK LABS is our innovation arm — a space where we prototype AI models, developer tools and future-facing digital products before they reach the world.</p>
+          </div>
+          <ul class="check-list">
+            <li>Rapid prototyping of AI-powered features</li>
+            <li>Internal developer tools &amp; frameworks</li>
+            <li>Research into practical next-generation tech</li>
+            <li>Incubation of future FABLOCK products</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section>
+    <div class="container">
+      <div class="split">
+        <div class="reveal">
+          <span class="eyebrow">Our Mission</span>
+          <h2>Practical technology, <span class="grad-text">honestly engineered</span></h2>
+        </div>
+        <p class="lead reveal" style="margin-top:0">Our mission is to build practical digital products that empower people and businesses — using artificial intelligence, clean engineering and modern design to solve real problems, starting from Nigeria and scaling to the world.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2>Have an idea? Let's build it together.</h2>
+        <p>Tell us about your project, product or business need — we reply fast on WhatsApp.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+          <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa">Chat on WhatsApp</a>
+          <a href="#/contact" class="btn btn-ghost">Go to Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: PRODUCTS
+============================================================ -->
+<div class="page" id="page-products">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Products</span>
+        <h1>Our <span class="grad-text">Products</span></h1>
+        <p class="lead">AI-powered platforms, developer tools and learning products — designed and built by FABLOCK TEC.</p>
+      </div>
+      <div class="grid grid-3" id="allProducts"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: SERVICES
+============================================================ -->
+<div class="page" id="page-services">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Services</span>
+        <h1>Our <span class="grad-text">Services</span></h1>
+        <p class="lead">End-to-end software services — from a business website to a full AI-integrated platform.</p>
+      </div>
+      <div class="grid grid-3" id="allServices"></div>
+      <div class="cta-band" style="margin-top:60px">
+        <h2>Ready to start a project?</h2>
+        <p>Reach out and let's discuss what you want to build.</p>
+        <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: PROJECTS
+============================================================ -->
+<div class="page" id="page-projects">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Projects</span>
+        <h1>Our <span class="grad-text">Projects</span></h1>
+        <p class="lead">Real work, real technology. A selection of projects engineered by the FABLOCK TEC team.</p>
+      </div>
+      <div class="grid grid-3" id="allProjects"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: ABOUT
+============================================================ -->
+<div class="page" id="page-about">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">About Us</span>
+        <h1>About <span class="grad-text">FABLOCK TEC</span></h1>
+        <p class="lead">A technology company from Nigeria, building for the next generation.</p>
+      </div>
+      <div class="split" style="margin-bottom:70px">
+        <div>
+          <h2>What we do</h2>
+          <p class="lead">FABLOCK TEC designs and builds AI-powered software, web applications, developer tools and digital products. We combine modern engineering with thoughtful design to create technology that is fast, reliable and genuinely useful.</p>
+        </div>
+        <div class="grid" style="gap:16px">
+          <div class="card"><h3>🎯 Mission</h3><p>To build practical digital products that empower people and businesses with honest, well-engineered technology.</p></div>
+          <div class="card"><h3>🔭 Vision</h3><p>To become a leading African technology company whose products are used across the world.</p></div>
+        </div>
+      </div>
+      <div class="grid grid-3">
+        <div class="card reveal"><div class="card-icon">🧠</div><h3>Technology Focus</h3><p>Artificial intelligence, modern web platforms, cloud-native software and developer productivity tools.</p></div>
+        <div class="card reveal"><div class="card-icon">💡</div><h3>Innovation</h3><p>Through FABLOCK LABS we prototype and incubate new ideas before turning them into shipped products.</p></div>
+        <div class="card reveal"><div class="card-icon">🛠️</div><h3>Practical Products</h3><p>We build technology that solves real problems — for businesses, developers, students and everyday users.</p></div>
+      </div>
+      <div class="cta-band" style="margin-top:70px">
+        <h2>Want to work with us?</h2>
+        <p>We're open to projects, partnerships and new ideas.</p>
+        <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: TEAM (live Firebase directory)
+============================================================ -->
+<div class="page" id="page-team">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Members Directory</span>
+        <h1>Meet the <span class="grad-text">FABLOCK TEC</span> Team</h1>
+        <p class="lead">Our engineers, designers and builders — updated live.</p>
+      </div>
+      <div class="member-grid" id="teamMembers"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: CONTACT
+============================================================ -->
+<div class="page" id="page-contact">
+  <section style="padding-top:150px">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Contact</span>
+        <h1>Contact <span class="grad-text">FABLOCK TEC</span></h1>
+        <p class="lead">Tell us about your project — the fastest way to reach us is WhatsApp.</p>
+      </div>
+      <div class="split" style="align-items:start">
+        <div>
+          <div class="card" style="margin-bottom:22px">
+            <h3>FABLOCK TEC</h3>
+            <p style="margin:14px 0 6px;color:var(--muted);font-size:.9rem">WhatsApp:</p>
+            <p style="font-size:1.25rem;font-weight:700;letter-spacing:.02em">+2347045891162</p>
+            <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa" style="margin-top:20px">
+              Chat with FABLOCK TEC on WhatsApp
+            </a>
+          </div>
+          <div class="card">
+            <h3>What happens next?</h3>
+            <ul class="check-list">
+              <li>Message us your idea or requirement</li>
+              <li>We scope the work and reply with next steps</li>
+              <li>We build, ship and support your product</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:20px">Send a message</h3>
+          <form id="contactForm" novalidate>
+            <div class="field"><label for="cName">Name</label><input id="cName" type="text" required placeholder="Your name"></div>
+            <div class="field"><label for="cEmail">Email</label><input id="cEmail" type="email" required placeholder="you@example.com"></div>
+            <div class="field"><label for="cSubject">Subject</label><input id="cSubject" type="text" required placeholder="What is this about?"></div>
+            <div class="field"><label for="cMsg">Message</label><textarea id="cMsg" required placeholder="Describe your project or question..."></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Submit Message</button>
+            <p class="form-note">Submitting opens WhatsApp with your message pre-filled — no email address is stored or invented.</p>
+            <p class="form-status" id="contactStatus"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: ADMIN (Firebase Auth + Realtime Database)
+============================================================ -->
+<div class="page" id="page-admin">
+  <!-- Login -->
+  <div class="container" id="adminLoginView">
+    <div class="card login-card">
+      <span class="eyebrow">Admin</span>
+      <h2 style="margin-bottom:8px">Admin Sign In</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:22px">Restricted to authenticated FABLOCK TEC administrators.</p>
+      <div class="fb-warning" id="fbWarning" style="display:none"></div>
+      <form id="loginForm" novalidate>
+        <div class="field"><label for="aEmail">Admin Email</label><input id="aEmail" type="email" required autocomplete="username" placeholder="admin@example.com"></div>
+        <div class="field"><label for="aPass">Password</label><input id="aPass" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" id="loginBtn">Sign In</button>
+        <p class="form-status" id="loginStatus"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="container admin-wrap" id="adminDash" style="display:none">
+    <aside class="admin-side">
+      <a href="#/admin" data-apanel="dashboard" class="active">📊 Dashboard</a>
+      <a href="#/admin" data-apanel="members">👥 Members</a>
+      <a href="#/admin" data-apanel="members-add">➕ Add Member</a>
+      <a href="#/admin" data-apanel="products">📦 Products</a>
+      <a href="#/admin" data-apanel="projects">🚀 Projects</a>
+      <a href="#/admin" data-apanel="settings">⚙️ Settings</a>
+      <button id="logoutBtn" style="color:var(--danger)">🚪 Sign Out</button>
+    </aside>
+
+    <div>
+      <!-- Dashboard home -->
+      <div class="admin-panel active" id="apanel-dashboard">
+        <div class="admin-card">
+          <h2 style="margin-bottom:6px">Welcome, <span id="adminName">Admin</span> 👋</h2>
+          <p style="color:var(--muted);font-size:.92rem">Manage the FABLOCK TEC digital ecosystem from here.</p>
+          <div class="grid grid-3" style="margin-top:26px">
+            <div class="card"><h3 id="statMembers">0</h3><p>Team members live on the site</p></div>
+            <div class="card"><h3>7</h3><p>Public services listed</p></div>
+            <div class="card"><h3>5</h3><p>Products published</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members list -->
+      <div class="admin-panel" id="apanel-members">
+        <div class="admin-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+            <h2>Members</h2>
+            <button class="btn btn-primary btn-sm" data-goto="members-add">+ Add Member</button>
+          </div>
+          <div id="adminMembersList"></div>
+        </div>
+      </div>
+
+      <!-- Add / Edit member -->
+      <div class="admin-panel" id="apanel-members-add">
+        <div class="admin-card">
+          <h2 id="memberFormTitle">Add Member</h2>
+          <p style="color:var(--muted);font-size:.9rem;margin:6px 0 24px">Images are compressed in the browser before being stored as optimized Base64.</p>
+          <form id="memberForm" novalidate>
+            <input type="hidden" id="mId">
+            <div class="grid grid-2">
+              <div class="field"><label for="mName">Full Name *</label><input id="mName" type="text" required placeholder="e.g. Ada Lovelace"></div>
+              <div class="field"><label for="mRole">Role / Position *</label><input id="mRole" type="text" required placeholder="e.g. Founder & CEO"></div>
+            </div>
+            <div class="grid grid-2">
+              <div class="field"><label for="mDept">Department (optional)</label><input id="mDept" type="text" placeholder="e.g. Engineering, Design"></div>
+              <div class="field"><label for="mSocial">Social / Contact Link (optional)</label><input id="mSocial" type="url" placeholder="https://..."></div>
+            </div>
+            <div class="field"><label for="mBio">Short Biography *</label><textarea id="mBio" required placeholder="A short description of this member..." style="min-height:100px"></textarea></div>
+            <div class="field">
+              <label for="mImage">Profile Picture (max 5MB — auto-compressed)</label>
+              <input id="mImage" type="file" accept="image/*">
+              <img id="mPreview" class="img-preview" alt="Member image preview">
+              <p class="form-note" id="imgNote">Select an image to preview it before saving.</p>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button type="submit" class="btn btn-primary" id="saveMemberBtn">Save Member</button>
+              <button type="button" class="btn btn-ghost" data-goto="members">Cancel</button>
+            </div>
+            <p class="form-status" id="memberStatus"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Placeholder panels -->
+      <div class="admin-panel" id="apanel-products">
+        <div class="admin-card"><h2>Products</h2><p style="color:var(--muted);margin-top:10px">Product management is coming in a future update. The Members section is fully functional.</p></div>
+      </div>
+      <div class="admin-panel" id="apanel-projects">
+        <div class="admin-card"><h2>Projects</h2><p style="color:var(--muted);margin-top:10px">Project management is coming in a future update. The Members section is fully functional.</p></div>
+      </div>
+
+      <!-- Settings: Firebase config + security rules -->
+      <div class="admin-panel" id="apanel-settings">
+        <div class="admin-card" style="margin-bottom:22px">
+          <h2>Firebase Configuration</h2>
+          <p style="color:var(--muted);font-size:.9rem;margin:8px 0 16px">Paste your Firebase web app configuration in the marked section of the source code (search for <code style="color:var(--accent-2)">FIREBASE CONFIGURATION</code>). These are public web keys — never put Admin SDK or server credentials here.</p>
+          <div class="fb-warning" id="fbStatusSettings">Checking Firebase configuration…</div>
+        </div>
+        <div class="admin-card">
+          <h2>Realtime Database Security Rules</h2>
+          <p style="color:var(--muted);font-size:.9rem;margin:8px 0 16px">Use rules like these so the public can read members but only admins can write. Replace <code style="color:var(--accent-2)">YOUR_ADMIN_UID</code> with your Firebase Auth UID (or check <code style="color:var(--accent-2)">auth != null</code> for any logged-in admin).</p>
+          <div class="code-block">{
+  "rules": {
+    "members": {
+      ".read": true,
+      "$memberId": {
+        ".write": "auth != null &amp;&amp; auth.uid === 'YOUR_ADMIN_UID'"
+      }
+    }
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="#/" class="logo" style="margin-bottom:14px"><span class="logo-mark">F</span> FABLOCK&nbsp;TEC</a>
+        <p style="color:var(--muted);font-size:.9rem;max-width:280px;margin-top:12px">Building Technology for the Next Generation. AI software, web applications, developer tools &amp; digital products from Nigeria.</p>
+        <a href="https://wa.me/2347045891162" target="_blank" rel="noopener" class="btn btn-wa btn-sm" style="margin-top:18px">Chat on WhatsApp</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#/about">About Us</a></li>
+          <li><a href="#/team">Team</a></li>
+          <li><a href="#/projects">Projects</a></li>
+          <li><a href="#/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>What We Do</h4>
+        <ul>
+          <li><a href="#/products">Products</a></li>
+          <li><a href="#/services">Services</a></li>
+          <li><a href="#/about">FABLOCK LABS</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://wa.me/2347045891162" target="_blank" rel="noopener">WhatsApp: +2347045891162</a></li>
+          <li><a href="#/contact">Contact Form</a></li>
+          <li><a href="#/admin">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> FABLOCK TEC. All rights reserved.</span>
+      <span>Nigeria · Building Technology for the Next Generation.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a class="wa-float" href="https://wa.me/2347045891162" target="_blank" rel="noopener" aria-label="Chat with FABLOCK TEC on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.1-4.7-4-4.9-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.2c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.3.2.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4 0 .2 0 .7-.2 1.1z"/></svg>
+</a>
+
+<!-- Delete confirmation modal -->
+<div class="modal-backdrop" id="deleteModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <h3 id="deleteTitle">Delete this member?</h3>
+    <p style="color:var(--muted);font-size:.92rem;margin:12px 0 24px">This will permanently remove the member from the public website. This action cannot be undone.</p>
+    <div style="display:flex;gap:12px;justify-content:flex-end">
+      <button class="btn btn-ghost btn-sm" id="cancelDelete">Cancel</button>
+      <button class="btn btn-danger btn-sm" id="confirmDelete">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   FABLOCK TEC — Application Logic
+================================================================ */
+
+/* ────────────────────────────────────────────────────────────────
+   ██ FIREBASE CONFIGURATION ██
+   1. Create a project at https://console.firebase.google.com
+   2. Add a Web App → copy the config object below
+   3. Enable Realtime Database + Email/Password Authentication
+   4. Paste your config here (these are PUBLIC web keys by design)
+──────────────────────────────────────────────────────────────── */
+const firebaseConfig = {
+  apiKey: "AIzaSyAJpJYMooqEs0VKT1YZL-nne-cNv4BcSPI",
+  authDomain: "tomini-mart.firebaseapp.com",
+  databaseURL: "https://tomini-mart-default-rtdb.firebaseio.com",
+  projectId: "tomini-mart",
+  storageBucket: "tomini-mart.firebasestorage.app",
+  messagingSenderId: "707213630195",
+  appId: "1:707213630195:web:687916ead8176c12e93586"
+};
+
+/* WhatsApp */
+const WHATSAPP = "https://wa.me/2347045891162";
+
+/* ---------- Firebase init (safe — site works without it) ---------- */
+let db = null, auth = null, firebaseReady = false;
+try {
+  if (firebaseConfig.apiKey !== "YOUR_API_KEY" && firebaseConfig.databaseURL !== "https://YOUR_PROJECT-default-rtdb.firebaseio.com") {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    auth = firebase.auth();
+    firebaseReady = true;
+  }
+} catch (e) { console.error("Firebase init error:", e); }
+
+/* ================================================================
+   CONTENT DATA
+================================================================ */
+const PRODUCTS = [
+  { name:"FABLOCK AI Builder", category:"AI Platform", status:"live",
+    desc:"An AI-powered app builder that turns natural-language ideas into working software — fast.",
+    hue:["#5b8cff","#22d3ee"], link:"https://wa.me/2347045891162" },
+  { name:"FABLOCK Code Editor", category:"Developer Tool", status:"beta",
+    desc:"A fast, modern code editor built for developers who want speed, simplicity and smart assistance.",
+    hue:["#a78bfa","#5b8cff"], link:"https://wa.me/2347045891162" },
+  { name:"VoiceCall Pro", category:"Communication", status:"live",
+    desc:"Reliable voice-calling technology for businesses and teams that need clear, instant communication.",
+    hue:["#22d3ee","#34d399"], link:"https://wa.me/2347045891162" },
+  { name:"FABLOCK Study", category:"EdTech", status:"live",
+    desc:"A smart learning platform helping students study better with AI-assisted explanations and practice.",
+    hue:["#f59e0b","#ef4444"], link:"https://wa.me/2347045891162" },
+  { name:"FABLOCK Cloud Suite", category:"Infrastructure", status:"dev",
+    desc:"Upcoming suite of deployment and hosting tools for shipping web products in minutes. (Future product)",
+    hue:["#34d399","#22d3ee"], link:"https://wa.me/2347045891162" },
+  { name:"FABLOCK Analytics", category:"Data & Insights", status:"planned",
+    desc:"Future product — beautiful, real-time analytics dashboards for growing businesses.",
+    hue:["#8b5cf6","#ec4899"], link:"https://wa.me/2347045891162" }
+];
+
+const SERVICES = [
+  { icon:"🌐", name:"Website Development", desc:"Fast, responsive, SEO-friendly company and business websites that look premium on every device." },
+  { icon:"⚡", name:"Web Application Development", desc:"Full web applications — dashboards, portals, platforms — built with modern stacks and clean architecture." },
+  { icon:"🧠", name:"AI Integration", desc:"Add artificial intelligence to your product: chat assistants, smart automation, content intelligence and more." },
+  { icon:"🛠️", name:"Custom Software", desc:"Tailored software built around your exact business processes — not the other way around." },
+  { icon:"📊", name:"Business Dashboards", desc:"Real-time dashboards that turn your business data into clear, actionable insight." },
+  { icon:"🧰", name:"Developer Tools", desc:"CLIs, APIs, SDKs and internal tools that make engineering teams faster and happier." },
+  { icon:"💡", name:"Digital Solutions", desc:"End-to-end digital transformation: strategy, design, build, launch and support." }
+];
+
+const PROJECTS = [
+  { name:"FABLOCK AI Builder Platform", desc:"Core AI product infrastructure — natural-language to application generation pipeline.",
+    tech:["AI/ML","Node.js","React"], link:"https://wa.me/2347045891162", hue:["#5b8cff","#a78bfa"] },
+  { name:"Business Intelligence Dashboard", desc:"Real-time analytics dashboard built for a Nigerian retail business — sales, stock and staff insights.",
+    tech:["JavaScript","Firebase","Charts"], link:"https://wa.me/2347045891162", hue:["#22d3ee","#34d399"] },
+  { name:"FABLOCK Study Platform", desc:"AI-assisted learning product with smart practice questions and instant explanations.",
+    tech:["AI","Web","EdTech"], link:"https://wa.me/2347045891162", hue:["#f59e0b","#ef4444"] },
+  { name:"Company Website Ecosystem", desc:"This very website — a single-file, Firebase-powered ecosystem with a live team directory.",
+    tech:["HTML/CSS","Firebase","Vercel"], link:"https://YOUR-DOMAIN.com/", hue:["#8b5cf6","#ec4899"] },
+  { name:"VoiceCall Pro Backend", desc:"Low-latency voice communication infrastructure for business calling.",
+    tech:["WebRTC","Node.js","Realtime"], link:"https://wa.me/2347045891162", hue:["#34d399","#22d3ee"] },
+  { name:"Internal Developer Toolkit", desc:"FABLOCK LABS internal tooling — scaffolding, deployment helpers and shared libraries.",
+    tech:["CLI","DevTools","Open Source"], link:"https://wa.me/2347045891162", hue:["#5b8cff","#22d3ee"] }
+];
+
+const STATUS_LABEL = { live:"Live", dev:"In Development", beta:"Beta", planned:"Planned" };
+const STATUS_CLASS = { live:"chip-live", dev:"chip-dev", beta:"chip-beta", planned:"chip-planned" };
+
+/* Product/project preview SVG art */
+function art(hue, title, icon){
+  return `<svg viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${title} preview illustration">
+    <defs><linearGradient id="pg${title.length}${icon}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${hue[0]}" stop-opacity=".5"/><stop offset="1" stop-color="${hue[1]}" stop-opacity=".25"/>
+    </linearGradient></defs>
+    <rect width="400" height="225" fill="#0c1424"/>
+    <rect width="400" height="225" fill="url(#pg${title.length}${icon})"/>
+    <g stroke="rgba(255,255,255,.06)"><path d="M0 56h400M0 112h400M0 168h400M100 0v225M200 0v225M300 0v225"/></g>
+    <circle cx="200" cy="105" r="46" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.25)"/>
+    <text x="200" y="120" text-anchor="middle" font-size="34">${icon}</text>
+    <text x="200" y="200" text-anchor="middle" font-family="monospace" font-size="13" fill="rgba(255,255,255,.65)">${title}</text>
+  </svg>`;
+}
+
+/* ================================================================
+   RENDER: PRODUCTS / SERVICES / PROJECTS
+================================================================ */
+function productCard(p, i){
+  return `<article class="card reveal">
+    <div class="preview">${art(p.hue, p.name, ["🤖","💻","📞","📚","☁️","📈"][i % 6])}</div>
+    <span class="chip ${STATUS_CLASS[p.status]}">${STATUS_LABEL[p.status]}</span>
+    <h3 style="margin-top:12px">${p.name}</h3>
+    <p>${p.desc}</p>
+    <span class="tag">${p.category}</span><br>
+    <a class="card-link" href="${p.link}" target="_blank" rel="noopener">Learn more <span>→</span></a>
+  </article>`;
+}
+function serviceCard(s){
+  return `<article class="card reveal">
+    <div class="card-icon">${s.icon}</div>
+    <h3>${s.name}</h3><p>${s.desc}</p>
+  </article>`;
+}
+function projectCard(p, i){
+  return `<article class="card reveal">
+    <div class="preview">${art(p.hue, p.name, ["🚀","📊","🎓","🌐","📞","🧰"][i % 6])}</div>
+    <h3>${p.name}</h3><p>${p.desc}</p>
+    <div class="tech-row">${p.tech.map(t=>`<span>${t}</span>`).join("")}</div>
+    <a class="card-link" href="${p.link}" target="_blank" rel="noopener">View project <span>→</span></a>
+  </article>`;
+}
+
+document.getElementById('homeProducts').innerHTML  = PRODUCTS.slice(0,3).map(productCard).join("");
+document.getElementById('allProducts').innerHTML   = PRODUCTS.map(productCard).join("");
+document.getElementById('homeServices').innerHTML  = SERVICES.slice(0,6).map(serviceCard).join("");
+document.getElementById('allServices').innerHTML   = SERVICES.map(serviceCard).join("");
+document.getElementById('homeProjects').innerHTML  = PROJECTS.slice(0,3).map(projectCard).join("");
+document.getElementById('allProjects').innerHTML   = PROJECTS.map(projectCard).join("");
+
+/* ================================================================
+   ROUTER (hash-based SPA)
+================================================================ */
+const ROUTES = ["home","products","services","projects","about","team","contact","admin"];
+function route(){
+  let h = (location.hash || "#/").replace(/^#\/?/, "").split("?")[0];
+  if (!ROUTES.includes(h)) h = "home";
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + h).classList.add("active");
+  document.querySelectorAll(".nav-links a[data-route]").forEach(a =>
+    a.classList.toggle("active", a.dataset.route === h));
+  document.getElementById("navLinks").classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "instant" });
+  document.title = {
+    home:"FABLOCK TEC — Building Technology for the Next Generation | AI Software & Digital Products, Nigeria",
+    products:"Products — FABLOCK TEC",
+    services:"Services — FABLOCK TEC",
+    projects:"Projects — FABLOCK TEC",
+    about:"About — FABLOCK TEC",
+    team:"Meet the Team — FABLOCK TEC",
+    contact:"Contact — FABLOCK TEC",
+    admin:"Admin — FABLOCK TEC"
+  }[h];
+  if (h === "admin") renderAdminAuthState();
+  observeReveals();
+}
+window.addEventListener("hashchange", route);
+
+/* Mobile nav */
+document.getElementById("burger").addEventListener("click", () =>
+  document.getElementById("navLinks").classList.toggle("open"));
+
+/* Nav scroll effect */
+window.addEventListener("scroll", () =>
+  document.getElementById("siteNav").classList.toggle("scrolled", window.scrollY > 20));
+
+/* Reveal on scroll */
+let revealObserver;
+function observeReveals(){
+  if (!revealObserver){
+    revealObserver = new IntersectionObserver(entries =>
+      entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")), { threshold:.08 });
+  }
+  document.querySelectorAll(".reveal:not(.visible)").forEach(el => revealObserver.observe(el));
+}
+
+/* ================================================================
+   TEAM — Firebase Realtime Database (live listeners)
+   Structure:
+     members/{memberId}: { name, role, bio, imageBase64, social, dept, createdAt }
+================================================================ */
+const memberTargets = ["homeMembers", "teamMembers"];
+let membersCache = [];
+let firstLoadDone = false;
+
+function memberCardHTML(m, id){
+  const initials = (m.name || "?").split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();
+  const img = m.imageBase64
+    ? `<img src="${m.imageBase64}" alt="Photo of ${escapeHtml(m.name)}" loading="lazy"
+         onerror="this.parentNode.innerHTML='<span>${initials}</span>'">`
+    : `<span>${initials}</span>`;
+  return `<article class="member-card">
+    <div class="avatar">${img}</div>
+    <h3>${escapeHtml(m.name || "Unnamed")}</h3>
+    <div class="member-role">${escapeHtml(m.role || "Member")}</div>
+    <p class="member-bio">${escapeHtml(m.bio || "")}</p>
+    ${m.dept ? `<span class="member-dept">${escapeHtml(m.dept)}</span>` : ""}
+    ${m.social ? `<br><a class="member-social" href="${escapeAttr(m.social)}" target="_blank" rel="noopener">Connect ↗</a>` : ""}
+  </article>`;
+}
+
+function renderMembers(members){
+  membersCache = members;
+  const html = members.length
+    ? members.map(([id, m]) => memberCardHTML(m, id)).join("")
+    : `<div class="empty-state" style="grid-column:1/-1">
+         <div class="big">👥</div>
+         <h3>No team members yet</h3>
+         <p>New members added by the administrator will appear here automatically.</p>
+       </div>`;
+  memberTargets.forEach(tid => {
+    const el = document.getElementById(tid);
+    if (el) el.innerHTML = html;
+  });
+  // Admin list + stats
+  const adminList = document.getElementById("adminMembersList");
+  if (adminList){
+    adminList.innerHTML = members.length
+      ? `<div style="overflow-x:auto"><table class="admin-table"><thead><tr>
+          <th>Photo</th><th>Name</th><th>Role</th><th>Department</th><th>Actions</th>
+        </tr></thead><tbody>${members.map(([id, m]) => `
+        <tr>
+          <td>${m.imageBase64 ? `<img class="mini-avatar" src="${m.imageBase64}" alt="">` : "—"}</td>
+          <td><strong>${escapeHtml(m.name||"")}</strong></td>
+          <td>${escapeHtml(m.role||"")}</td>
+          <td>${escapeHtml(m.dept||"—")}</td>
+          <td style="white-space:nowrap">
+            <button class="btn btn-ghost btn-sm" onclick="editMember('${id}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="askDeleteMember('${id}')">Delete</button>
+          </td>
+        </tr>`).join("")}</tbody></table></div>`
+      : `<div class="empty-state"><div class="big">📭</div><p>No members yet. Click “Add Member” to create the first one.</p></div>`;
+  }
+  const stat = document.getElementById("statMembers");
+  if (stat) stat.textContent = members.length;
+}
+
+/* Skeleton loaders */
+function renderSkeletons(){
+  const sk = `<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>`;
+  memberTargets.forEach(tid => { const el = document.getElementById(tid); if (el) el.innerHTML = sk; });
+}
+
+/* Live listener — Firebase when configured; otherwise localStorage fallback */
+function loadLocalMembers(){
+  try {
+    const raw = localStorage.getItem("fablock_members");
+    const val = raw ? JSON.parse(raw) : {};
+    const members = Object.entries(val).sort((a,b) => (b[1].createdAt||0) - (a[1].createdAt||0));
+    renderMembers(members);
+    firstLoadDone = true;
+  } catch(e){ renderMembers([]); }
+}
+
+function saveLocalMembers(obj){
+  localStorage.setItem("fablock_members", JSON.stringify(obj));
+  loadLocalMembers();
+}
+
+if (firebaseReady && db){
+  renderSkeletons();
+  db.ref("members").on("value", snap => {
+    const val = snap.val() || {};
+    const members = Object.entries(val).sort((a,b) => (b[1].createdAt||0) - (a[1].createdAt||0));
+    renderMembers(members);
+    firstLoadDone = true;
+  }, err => {
+    console.error("Members listener error:", err);
+    renderMembers([]);
+  });
+} else {
+  loadLocalMembers();
+}
+
+/* Helpers */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,"&quot;").replace(/javascript:/gi,""); }
+
+/* ================================================================
+   ADMIN — Authentication + Member CRUD
+   Hardcoded admin (demo): error404@gmail.com / yahoo
+   NOTE: Client-side credentials are visible in source — use Firebase Auth for production.
+================================================================ */
+const ADMIN_EMAIL = "error404@gmail.com";
+const ADMIN_PASSWORD = "yahoo";
+
+let currentUser = null;
+let pendingImageBase64 = null;   // compressed base64 ready to save
+let pendingDeleteId = null;
+
+function isAdminLoggedIn(){
+  return sessionStorage.getItem("fablock_admin") === "1" || !!currentUser;
+}
+
+function renderAdminAuthState(){
+  const loginView = document.getElementById("adminLoginView");
+  const dash = document.getElementById("adminDash");
+  const settingsFb = document.getElementById("fbStatusSettings");
+  const w = document.getElementById("fbWarning");
+
+  if (firebaseReady){
+    if (w){ w.style.display = "flex"; w.classList.add("ok"); w.innerHTML = "✅ ."; }
+    if (settingsFb){ settingsFb.classList.add("ok"); settingsFb.textContent = "✅ Firebase is connected — Realtime Database is active."; }
+  } else {
+    if (w){ w.style.display = "flex"; w.classList.remove("ok"); w.innerHTML = "ℹ️ Firebase not configured — members stored in this browser (localStorage). Add Firebase config for live multi-device sync."; }
+    if (settingsFb){ settingsFb.classList.remove("ok"); settingsFb.textContent = "Firebase not configured. Members use localStorage until you add your Firebase web config."; }
+  }
+
+  if (isAdminLoggedIn()){
+    loginView.style.display = "none";
+    dash.style.display = "grid";
+    const nameEl = document.getElementById("adminName");
+    if (nameEl) nameEl.textContent = (currentUser && currentUser.email) ? currentUser.email.split("@")[0] : "Admin";
+  } else {
+    loginView.style.display = "block";
+    dash.style.display = "none";
+  }
+}
+
+if (firebaseReady && auth){
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if (user) sessionStorage.setItem("fablock_admin", "1");
+    renderAdminAuthState();
+  });
+}
+
+/* Restore session on load */
+if (sessionStorage.getItem("fablock_admin") === "1"){
+  currentUser = currentUser || { email: ADMIN_EMAIL };
+}
+
+/* Login — accepts hardcoded admin credentials (and Firebase Auth if configured) */
+document.getElementById("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const status = document.getElementById("loginStatus");
+  const btn = document.getElementById("loginBtn");
+  status.className = "form-status"; status.textContent = "";
+  const email = document.getElementById("aEmail").value.trim();
+  const password = document.getElementById("aPass").value;
+  btn.disabled = true; btn.textContent = "Signing in…";
+
+  try {
+    // Hardcoded admin credentials (works without Firebase Auth)
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
+      sessionStorage.setItem("fablock_admin", "1");
+      currentUser = { email: ADMIN_EMAIL };
+      renderAdminAuthState();
+      status.className = "form-status ok";
+      status.textContent = "✅ Signed in as admin.";
+      return;
+    }
+
+    // Optional: also try Firebase Auth if configured
+    if (firebaseReady && auth){
+      await auth.signInWithEmailAndPassword(email, password);
+      sessionStorage.setItem("fablock_admin", "1");
+      return;
+    }
+
+    status.className = "form-status err";
+    status.textContent = "Invalid email or password.";
+  } catch (err){
+    status.className = "form-status err";
+    status.textContent = "Sign-in failed: " + (err.message || err.code || "Invalid credentials");
+  } finally {
+    btn.disabled = false; btn.textContent = "Sign In";
+  }
+});
+
+/* Logout */
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  sessionStorage.removeItem("fablock_admin");
+  currentUser = null;
+  if (auth) try { await auth.signOut(); } catch(_){}
+  renderAdminAuthState();
+});
+
+/* Admin panel switching */
+document.querySelectorAll("[data-apanel]").forEach(el => el.addEventListener("click", e => {
+  e.preventDefault();
+  switchPanel(el.dataset.apanel);
+}));
+document.querySelectorAll("[data-goto]").forEach(el => el.addEventListener("click", () => switchPanel(el.dataset.goto)));
+function switchPanel(name){
+  document.querySelectorAll(".admin-panel").forEach(p => p.classList.remove("active"));
+  const target = document.getElementById("apanel-" + name);
+  if (target) target.classList.add("active");
+  document.querySelectorAll("[data-apanel]").forEach(a =>
+    a.classList.toggle("active", a.dataset.apanel === name));
+  if (name === "members-add") resetMemberForm();
+}
+
+/* ---------- Image: validate → compress → Base64 → preview ---------- */
+const MAX_FILE_MB = 5;
+const COMPRESS_MAX_DIM = 512;   // px
+const COMPRESS_QUALITY = 0.82;  // jpeg quality
+
+document.getElementById("mImage").addEventListener("change", e => {
+  const file = e.target.files[0];
+  const note = document.getElementById("imgNote");
+  const preview = document.getElementById("mPreview");
+  pendingImageBase64 = null;
+  preview.style.display = "none"; preview.src = "";
+
+  if (!file) return;
+  if (!file.type.startsWith("image/")){ note.textContent = "⚠️ Please select an image file."; return; }
+  if (file.size > MAX_FILE_MB * 1024 * 1024){ note.textContent = `⚠️ Image is too large (max ${MAX_FILE_MB}MB).`; e.target.value = ""; return; }
+
+  note.textContent = "Compressing image…";
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      const scale = Math.min(1, COMPRESS_MAX_DIM / Math.max(width, height));
+      width = Math.max(1, Math.round(width * scale));
+      height = Math.max(1, Math.round(height * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      pendingImageBase64 = canvas.toDataURL("image/jpeg", COMPRESS_QUALITY);
+      preview.src = pendingImageBase64;
+      preview.style.display = "block";
+      const kb = Math.round(pendingImageBase64.length * 0.75 / 1024);
+      note.textContent = `✅ Compressed & ready (${kb} KB). Preview shown above.`;
+    };
+    img.onerror = () => { note.textContent = "⚠️ Could not read that image."; };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ---------- Add / Edit member ---------- */
+function resetMemberForm(){
+  document.getElementById("memberForm").reset();
+  document.getElementById("mId").value = "";
+  document.getElementById("memberFormTitle").textContent = "Add Member";
+  document.getElementById("saveMemberBtn").textContent = "Save Member";
+  document.getElementById("mPreview").style.display = "none";
+  document.getElementById("imgNote").textContent = "Select an image to preview it before saving.";
+  document.getElementById("memberStatus").className = "form-status";
+  pendingImageBase64 = null;
+}
+
+window.editMember = function(id){
+  const entry = membersCache.find(([mid]) => mid === id);
+  if (!entry) return;
+  const m = entry[1];
+  document.getElementById("mId").value = id;
+  document.getElementById("mName").value = m.name || "";
+  document.getElementById("mRole").value = m.role || "";
+  document.getElementById("mDept").value = m.dept || "";
+  document.getElementById("mBio").value = m.bio || "";
+  document.getElementById("mSocial").value = m.social || "";
+  document.getElementById("mImage").value = "";
+  const preview = document.getElementById("mPreview");
+  if (m.imageBase64){ preview.src = m.imageBase64; preview.style.display = "block"; }
+  else preview.style.display = "none";
+  pendingImageBase64 = null; // keep existing image unless replaced
+  document.getElementById("imgNote").textContent = "Leave empty to keep the current image, or choose a new one to replace it.";
+  document.getElementById("memberFormTitle").textContent = "Edit Member";
+  document.getElementById("saveMemberBtn").textContent = "Update Member";
+  document.getElementById("memberStatus").className = "form-status";
+  switchPanel("members-add");
+};
+
+document.getElementById("memberForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const status = document.getElementById("memberStatus");
+  const btn = document.getElementById("saveMemberBtn");
+  status.className = "form-status"; status.textContent = "";
+
+  if (!isAdminLoggedIn()){ status.className = "form-status err"; status.textContent = "You must be signed in as an admin."; return; }
+  const id = document.getElementById("mId").value;
+  const name = document.getElementById("mName").value.trim();
+  const role = document.getElementById("mRole").value.trim();
+  const bio  = document.getElementById("mBio").value.trim();
+  if (!name || !role || !bio){ status.className = "form-status err"; status.textContent = "Name, role and biography are required."; return; }
+
+  const existing = id ? (membersCache.find(([mid]) => mid === id) || [null, {}])[1] : {};
+  const data = {
+    name, role, bio,
+    dept: document.getElementById("mDept").value.trim(),
+    social: document.getElementById("mSocial").value.trim(),
+    imageBase64: pendingImageBase64 || existing.imageBase64 || "",
+    createdAt: existing.createdAt || Date.now()
+  };
+  if (id) data.updatedAt = Date.now();
+
+  btn.disabled = true; btn.textContent = id ? "Updating…" : "Saving…";
+  try {
+    if (firebaseReady && db){
+      const ref = id ? db.ref("members/" + id) : db.ref("members").push();
+      await ref.set(data);
+    } else {
+      // localStorage fallback
+      let store = {};
+      try { store = JSON.parse(localStorage.getItem("fablock_members") || "{}"); } catch(_){}
+      const key = id || ("m_" + Date.now());
+      store[key] = data;
+      saveLocalMembers(store);
+    }
+    status.className = "form-status ok";
+    status.textContent = id ? "✅ Member updated — live on the website now." : "✅ Member added — live on the website now.";
+    setTimeout(() => switchPanel("members"), 900);
+  } catch (err){
+    status.className = "form-status err";
+    status.textContent = "Save failed: " + err.message;
+  } finally {
+    btn.disabled = false; btn.textContent = id ? "Update Member" : "Save Member";
+  }
+});
+
+/* ---------- Delete with confirmation ---------- */
+window.askDeleteMember = function(id){
+  pendingDeleteId = id;
+  document.getElementById("deleteModal").classList.add("open");
+};
+document.getElementById("cancelDelete").addEventListener("click", () => {
+  pendingDeleteId = null;
+  document.getElementById("deleteModal").classList.remove("open");
+});
+document.getElementById("deleteModal").addEventListener("click", e => {
+  if (e.target === e.currentTarget){ pendingDeleteId = null; e.currentTarget.classList.remove("open"); }
+});
+document.getElementById("confirmDelete").addEventListener("click", async () => {
+  if (!pendingDeleteId || !isAdminLoggedIn()) return;
+  try {
+    if (firebaseReady && db){
+      await db.ref("members/" + pendingDeleteId).remove();
+    } else {
+      let store = {};
+      try { store = JSON.parse(localStorage.getItem("fablock_members") || "{}"); } catch(_){}
+      delete store[pendingDeleteId];
+      saveLocalMembers(store);
+    }
+  } catch (err){ alert("Delete failed: " + err.message); }
+  pendingDeleteId = null;
+  document.getElementById("deleteModal").classList.remove("open");
+});
+
+/* ================================================================
+   CONTACT FORM → WhatsApp (no invented email)
+================================================================ */
+document.getElementById("contactForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const status = document.getElementById("contactStatus");
+  const name = document.getElementById("cName").value.trim();
+  const email = document.getElementById("cEmail").value.trim();
+  const subject = document.getElementById("cSubject").value.trim();
+  const msg = document.getElementById("cMsg").value.trim();
+  if (!name || !email || !subject || !msg){
+    status.className = "form-status err"; status.textContent = "Please fill in all fields."; return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    status.className = "form-status err"; status.textContent = "Please enter a valid email address."; return;
+  }
+  const text = encodeURIComponent(
+    `Hello FABLOCK TEC!%0A%0AName: ${name}%0AEmail: ${email}%0ASubject: ${subject}%0A%0A${msg}`.replace(/%0A/g,"\n")
+  );
+  status.className = "form-status ok";
+  status.textContent = "✅ Opening WhatsApp with your message…";
+  window.open(WHATSAPP + "?text=" + text, "_blank");
+  e.target.reset();
+});
+
+/* ================================================================
+   INIT
+================================================================ */
+document.getElementById("year").textContent = new Date().getFullYear();
+route();
+observeReveals();
+</script>
+</body>
+</html>
